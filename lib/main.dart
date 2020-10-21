@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dailee/sign_in_screen.dart';
+import 'package:dailee/signup.dart';
 
 void main() => runApp(MyApp());
 

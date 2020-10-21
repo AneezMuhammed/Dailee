@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:dailee/http.dart';
 import 'package:dailee/homescreen.dart';
+import 'package:dailee/signup.dart';
+
+import 'deliverytoagency.dart';
 
 class SignInScreen extends StatelessWidget {
+  List users = ["Customer", "Delivery to home", "Delivery to agency"];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +44,67 @@ class SignInScreen extends StatelessWidget {
                     SignForm(),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                     SizedBox(height: 20),
+                    InkWell(
+                      onTap: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            int selectedRadio = 0;
+                            return AlertDialog(
+                              title: Text(
+                                "Sign Up",
+                              ),
+                              content: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSetter setState) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List<Widget>.generate(
+                                        users.length, (int index) {
+                                      return ListTile(
+                                          title: Text(users[index]),
+                                          leading: Radio<int>(
+                                            value: index,
+                                            groupValue: selectedRadio,
+                                            onChanged: (int value) {
+                                              setState(
+                                                  () => selectedRadio = value);
+                                            },
+                                          ));
+                                    }),
+                                  );
+                                },
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text("Continue to Page"),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SignUpPage(
+                                                  usertype:
+                                                      users[selectedRadio],
+                                                )));
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text("Cancel"),
+                                  onPressed: () {
+                                    //Put your code here which you want to execute on Cancel button click.
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Text("SignUp",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -62,6 +128,32 @@ class _SignFormState extends State<SignForm> {
   String password;
   bool wait = false;
   bool remember = false;
+  signin ()async{
+  
+  var result = await http_post("login", {
+    "email": email,
+    "password": password,
+   
+
+  });
+  print(result.data['code']);
+  if (result.data['code'] == 200) {
+   
+     if(result.data['role']=="customer"){
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        (Route<dynamic> route) => false); 
+     }
+   else if(result.data['role']=="Deliver to agency") {Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        (Route<dynamic> route) => false);}
+ 
+  else if(result.data['role']=="Admin"){
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        (Route<dynamic> route) => false); }
+  }
+}
 
   @override
   void initState() {
@@ -86,28 +178,7 @@ class _SignFormState extends State<SignForm> {
   String role;
   bool loading = false;
 
-  checkUser() async {
-    // if (_formKey.currentState.validate()) {
-    // _formKey.currentState.save();
-    print("hello inece");
-    setState(() {
-      loading = true;
-    });
-    try {
-      var result = await http_post("login",
-          {"email": emailcontroller.text, "password": passwordcontroller.text});
-      print(result.data['code']);
-      if (result.data['code'] == 200) {
-        if (remember) {}
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => new HomeScreen()),
-            (Route<dynamic> route) => false);
-      } else if (result.data['code'] == 204) {}
-    } catch (err) {}
-    setState(() {
-      loading = false;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -151,15 +222,7 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Login",
             press: () {
-              checkUser();
-              // savePref("1");
-              // if (_formKey.currentState.validate()) {
-              //   _formKey.currentState.save();
-              //   // if all are valid then go to success screen
-              //   Navigator.of(context).pushAndRemoveUntil(
-              //       MaterialPageRoute(builder: (context) => new HomePage()),
-              //       (Route<dynamic> route) => false);
-              // }
+             signin();
             },
           )
         ],
@@ -171,7 +234,7 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       controller: passwordcontroller,
       obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      onChanged: (newValue) => password = newValue,
       validator: (value) {
         if (value.isEmpty) {
           return "";
@@ -193,7 +256,7 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       controller: emailcontroller,
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      onChanged: (newValue) {email = newValue;},
       validator: (value) {
         if (value.isEmpty) {
           return "";
