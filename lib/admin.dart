@@ -1,3 +1,4 @@
+import 'package:dailee/http.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
@@ -23,21 +24,23 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                Colors.yellow[800],
-                Colors.yellow[700],
-                Colors.yellow[600],
-                Colors.yellow[400],
-              ])),
+            color: Colors.blueGrey[900]
+              // gradient: LinearGradient(
+              //     begin: Alignment.topLeft,
+              //     end: Alignment.bottomRight,
+              //     colors: <Color>[                            //color gradient design
+              //   Colors.blueGrey[900],
+              //   Colors.blueGrey[900],
+              //   Colors.blueGrey[900],
+              //   Colors.blueGrey[900],
+              // ])
+              ),
         ),
         elevation: 0,
         title: Text(
           "Dailee:Admin",
           style: TextStyle(
-              fontSize: 30,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
               height: 0.5),
@@ -50,7 +53,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
             new Tab(
               icon: new Icon(Icons.receipt),
             ),
-            new Tab(
+            new Tab(                                             //icons on admin appbar
               icon: new Icon(Icons.room_service),
             ),
             new Tab(
@@ -103,7 +106,7 @@ class _DetailsState extends State<Details> {
             leading: CircleAvatar(child: icon),
             title: Text(
               text,
-              style: TextStyle(fontSize: 26),
+              style: TextStyle(fontSize: 22),
             ),
           ),
         ),
@@ -140,7 +143,7 @@ class _DetailsState extends State<Details> {
         ],
       ),
     );
-  }
+  }                                                       //upto this about creating the ui of ddetails
 }
 
 ///[REQUEST]
@@ -193,11 +196,13 @@ class _RequestState extends State<Request> {
     },
   ];
   buildGridView() {
-    return ListView.separated(
+    return ListView.separated
+    (
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: examplelist.length,
-      itemBuilder: (context, i) => InkWell(
+      itemBuilder: (context, i) => 
+      InkWell(
         onTap: () {},
         child: Container(
           child: Row(
@@ -370,7 +375,7 @@ class Complaint extends StatefulWidget {
 
 class _ComplaintState extends State<Complaint> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {            //here call old features through Container();
     return Container();
   }
 }
@@ -497,11 +502,21 @@ class _MessageState extends State<Message> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          SizedBox(height: 0,),
+          // Padding(
+            // padding:EdgeInsets.all(8.0),
+            // child:
+            Padding(padding: const EdgeInsets.all(20),
+                          child: Text("Message Customers and do business",style:TextStyle(fontSize:35) ,
+          ),
+            ),
+          // ),
+          SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (value) => message = value,
-              maxLines: 10,
+              maxLines: 2,
               decoration: new InputDecoration(
                 border: new OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -510,7 +525,7 @@ class _MessageState extends State<Message> {
                 ),
                 filled: true,
                 hintStyle: new TextStyle(color: Colors.grey[800]),
-                hintText: "Message......................",
+                hintText: "Enter the Message",
                 fillColor: Colors.white70,
                 // suffixIcon: IconButton(
                 //   icon: Icon(Icons.search),
@@ -521,7 +536,10 @@ class _MessageState extends State<Message> {
           ),
           RaisedButton(
             onPressed: () => print("$message"),
-            child: Text("Send Cheyadaaaa"),
+            child: Text(
+              "Send",
+              style: TextStyle(fontSize: 20,color:Colors.white),),
+            color: Colors.blueGrey[900],
           )
         ],
       ),
@@ -538,17 +556,22 @@ class WholeList extends StatefulWidget {
 }
 
 class _WholeListState extends State<WholeList> {
-  getApi() {
+  getApi() async{
+    print("how ");
     if (widget.datalist == "Customer") {
+      var result=await http_get("defaultcustomer");
 //Step1.search the list from node; use http get ::here for customer
       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
       setState(() {
-        mainlistforsearch = examplelist;
+    // /.;
+    print("default customer");
+    examplelist=result.data['list'];
       });
     } else if (widget.datalist == "Publication") {
       //Step1.search the list from node; use http get ::here for publication
       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
       setState(() {
+        
         mainlistforsearch = examplelist;
       });
     }
@@ -559,125 +582,19 @@ class _WholeListState extends State<WholeList> {
   @override
   void initState() {
     appBarTitle = new Text(widget.datalist);
-    getApi();
+    getApi(); //ask
 
     super.initState();
   }
 
   ///[THIS examplelist is what we assign to the ]
-  List examplelist = [
-    {
-      "name": "Customer1",
-      "city": "kothamnagalm",
-      "phonenumber": "993345364",
-      "address": "Cheruppuram p.o",
-      "pub": "asfasgasgasgagasgasg"
-    },
-    {
-      "name": "Customer2",
-      "city": "perum",
-      "phonenumber": "1093345364",
-      "address": "Tahdi p.o",
-      "pub": "213"
-    },
-    {
-      "name": "Customer3",
-      "city": "kochu",
-      "phonenumber": "03345364",
-      "address": "hello p.o",
-      "pub": "342"
-    },
-    {
-      "name": "Customer1",
-      "city": "kothamnagalm",
-      "phonenumber": "993345364",
-      "address": "Cheruppuram p.o",
-      "pub": "asfasgasgasgagasgasg"
-    },
-    {
-      "name": "Customer2",
-      "city": "perum",
-      "phonenumber": "1093345364",
-      "address": "Tahdi p.o",
-      "pub": "213"
-    },
-    {
-      "name": "Customer3",
-      "city": "kochu",
-      "phonenumber": "03345364",
-      "address": "hello p.o",
-      "pub": "342"
-    },
-    {
-      "name": "Customer1",
-      "city": "kothamnagalm",
-      "phonenumber": "993345364",
-      "address": "Cheruppuram p.o",
-      "pub": "asfasgasgasgagasgasg"
-    },
-    {
-      "name": "Customer2",
-      "city": "perum",
-      "phonenumber": "1093345364",
-      "address": "Tahdi p.o",
-      "pub": "213"
-    },
-    {
-      "name": "Customer3",
-      "city": "kochu",
-      "phonenumber": "03345364",
-      "address": "hello p.o",
-      "pub": "342"
-    },
-    {
-      "name": "Customer1",
-      "city": "kothamnagalm",
-      "phonenumber": "993345364",
-      "address": "Cheruppuram p.o",
-      "pub": "asfasgasgasgagasgasg"
-    },
-    {
-      "name": "Customer2",
-      "city": "perum",
-      "phonenumber": "1093345364",
-      "address": "Tahdi p.o",
-      "pub": "213"
-    },
-    {
-      "name": "Customer3",
-      "city": "kochu",
-      "phonenumber": "03345364",
-      "address": "hello p.o",
-      "pub": "342"
-    },
-    {
-      "name": "Customer1",
-      "city": "kothamnagalm",
-      "phonenumber": "993345364",
-      "address": "Cheruppuram p.o",
-      "pub": "asfasgasgasgagasgasg"
-    },
-    {
-      "name": "Customer2",
-      "city": "perum",
-      "phonenumber": "1093345364",
-      "address": "Tahdi p.o",
-      "pub": "213"
-    },
-    {
-      "name": "Customer3",
-      "city": "kochu",
-      "phonenumber": "03345364",
-      "address": "hello p.o",
-      "pub": "342"
-    },
-  ];
+  List examplelist = [];
 
   buildGridView() {
     return ListView.separated(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
-      itemCount: mainlistforsearch.length,
+      itemCount: examplelist.length,
       itemBuilder: (context, i) => InkWell(
         onTap: () {
           print("IVIDE ENTHELUM PRINT CHEYY");
@@ -692,7 +609,7 @@ class _WholeListState extends State<WholeList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "${mainlistforsearch[i]['name']}",
+                      "${examplelist[i]['customer_name']}",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.grey,
@@ -705,7 +622,7 @@ class _WholeListState extends State<WholeList> {
                     Container(
                       width: 100,
                       child: Text(
-                        "${mainlistforsearch[i]['city']}",
+                        "${examplelist[i]['email']}",
                         maxLines: 3,
                         style: TextStyle(fontSize: 15, color: Colors.grey[500]),
                       ),
@@ -717,7 +634,7 @@ class _WholeListState extends State<WholeList> {
               Column(
                 children: <Widget>[
                   Text(
-                    "${mainlistforsearch[i]['city']}",
+                    "${examplelist[i]['reg_mobile']}",
                     style: TextStyle(
                       fontSize: 25,
                       color: Colors.grey,
@@ -726,10 +643,10 @@ class _WholeListState extends State<WholeList> {
                   ),
                 ],
               ),
-              FlatButton(
-                onPressed: () => print("object"),
-                child: Icon(Icons.close),
-              )
+              // FlatButton(
+              //   onPressed: () => print("object"),
+              //   child: Icon(Icons.close),
+              // )
             ],
           ),
         ),
@@ -755,22 +672,27 @@ class _WholeListState extends State<WholeList> {
                     style: new TextStyle(
                       color: Colors.white,
                     ),
-                    onChanged: (query) {
+                    onChanged: (query) async {
+                      print(query);
                       ///[THIS IS MY STYLE OF SEARCHING A LIST WHICH IS TOTALLY FETCHED FROM THE API]
                       if (widget.datalist == "Customer") {
-                        print(query);
-                        setState(() {
-                          mainlistforsearch = examplelist
-                              .where((p) => p['name']
-                                  .toLowerCase()
-                                  .contains(query.toLowerCase()))
-                              .toList();
-                        });
+                        var result= await http_get("search/${query.toLowerCase()}");
+                       setState(() {
+                          examplelist=result.data["list"];
+                       });
+                        // print(query);
+                        // setState(() {
+                        //   mainlistforsearch = examplelist
+                        //       .where((p) => p['name']                           //ask
+                        //           .toLowerCase()
+                        //           .contains(query.toLowerCase()))
+                        //       .toList();
+                        // });
                       }
                     },
                     decoration: new InputDecoration(
                         prefixIcon: new Icon(Icons.search, color: Colors.white),
-                        hintText: "Search...",
+                        hintText: "Search...",                                            //ask 
                         hintStyle: new TextStyle(color: Colors.white)),
                   );
                 } else {

@@ -3,6 +3,8 @@ import 'package:dailee/http.dart';
 import 'package:dailee/homescreen.dart';
 import 'package:dailee/signup.dart';
 
+import 'admin.dart';
+import 'customer.dart';
 import 'deliverytoagency.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -139,9 +141,9 @@ class _SignFormState extends State<SignForm> {
   print(result.data['code']);
   if (result.data['code'] == 200) {
    
-     if(result.data['role']=="customer"){
+     if(result.data['role']=="Customer"){
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        MaterialPageRoute(builder: (context) => new Customer()),
         (Route<dynamic> route) => false); 
      }
    else if(result.data['role']=="Deliver to agency") {Navigator.of(context).pushAndRemoveUntil(
@@ -150,7 +152,7 @@ class _SignFormState extends State<SignForm> {
  
   else if(result.data['role']=="Admin"){
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        MaterialPageRoute(builder: (context) => new  Admin()),
         (Route<dynamic> route) => false); }
   }
 }
