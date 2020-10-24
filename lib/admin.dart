@@ -1,6 +1,8 @@
 import 'package:dailee/http.dart';
 import 'package:flutter/material.dart';
 
+import 'details.dart';
+
 class Admin extends StatefulWidget {
   @override
   _AdminState createState() => _AdminState();
@@ -120,7 +122,7 @@ class _DetailsState extends State<Details> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          carbutton(Icon(Icons.perm_contact_calendar), "Publication", () {
+          carbutton(Icon(Icons.perm_contact_calendar), "Publications", () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -132,11 +134,11 @@ class _DetailsState extends State<Details> {
                 MaterialPageRoute(
                     builder: (context) => WholeList("Subscription")));
           }),
-          carbutton(Icon(Icons.perm_contact_calendar), "Customer", () {
+          carbutton(Icon(Icons.perm_contact_calendar), "Customers", () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WholeList("Customer")));
           }),
-          carbutton(Icon(Icons.perm_contact_calendar), "Delivery", () {
+          carbutton(Icon(Icons.perm_contact_calendar), "Delivery Boys", () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WholeList("Delivery")));
           }),
@@ -547,7 +549,7 @@ class _MessageState extends State<Message> {
   }
 }
 
-//////////////////////
+//////////////////////here begins our search so enjoy 
 class WholeList extends StatefulWidget {
   final String datalist;
   WholeList(this.datalist);
@@ -566,17 +568,66 @@ class _WholeListState extends State<WholeList> {
     // /.;
     print("default customer");
     examplelist=result.data['list'];
+    newexamplelist=examplelist;
       });
     } else if (widget.datalist == "Publication") {
+          var result=await http_get("defaultpublication");
       //Step1.search the list from node; use http get ::here for publication
       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
       setState(() {
-        
-        mainlistforsearch = examplelist;
+        print("default publication");
+        examplelist=result.data['list'];
+        newexamplelist=examplelist;
       });
     }
-  }
+    else if (widget.datalist == "Delivery"){
 
+    var result=await http_get("defaultdeliver");
+    print(result);
+    setState(() {
+      print(result);
+      print("default delivers");
+      print(result);
+      examplelist=result.data['list'];
+      newexamplelist=examplelist;
+    });
+  }
+  }
+//  newgetApi() async{
+//    examplelist=[];
+//    print("new keriyo");
+//     // print("how ");
+//     if (widget.datalist == "Customer") {
+//       var result=await http_get("defaultcustomer");
+// //Step1.search the list from node; use http get ::here for customer
+//       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
+//       setState(() {
+//     // /.;
+//     print("default customer");
+//     examplelist=result.data['list'];
+//       });
+//     } else if (widget.datalist == "Publication") {
+//           var result=await http_get("defaultpublication");
+//       //Step1.search the list from node; use http get ::here for publication
+//       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
+//       setState(() {
+//         print("default publication");
+//         examplelist=result.data['list'];
+
+//       });
+//     }
+//     else if (widget.datalist == "Delivery"){
+
+//     var result=await http_get("defaultdeliver");
+//     print(result);
+//     setState(() {
+//       print(result);
+//       print("default delivers");
+//       print(result);
+//       examplelist=result.data['list'];
+//     });
+//   }
+//   }
   Widget appBarTitle;
   List mainlistforsearch;
   @override
@@ -589,14 +640,16 @@ class _WholeListState extends State<WholeList> {
 
   ///[THIS examplelist is what we assign to the ]
   List examplelist = [];
+  List newexamplelist=[];
 
-  buildGridView() {
+  buildCustomerGridView() {
     return ListView.separated(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: examplelist.length,
       itemBuilder: (context, i) => InkWell(
         onTap: () {
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Customer', id:examplelist[i]['customer_id'])));
           print("IVIDE ENTHELUM PRINT CHEYY");
         },
         child: Card(
@@ -653,8 +706,137 @@ class _WholeListState extends State<WholeList> {
       ),
       separatorBuilder: (context, i) => Divider(),
     );
-  }
-
+  }      //end of customer build grid view
+ buildDeliveryGridView() {
+    return ListView.separated(
+      padding: EdgeInsets.all(0),
+      shrinkWrap: true,
+      itemCount: examplelist.length,
+      itemBuilder: (context, i) => InkWell(
+        onTap: () {
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Delivers', id:examplelist[i]['deliver_id'])));
+          print("IVIDE ENTHELUM PRINT CHEYY");
+        },
+        child: Card(
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "${examplelist[i]['name']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        "${examplelist[i]['email']}",
+                        maxLines: 3,
+                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "${examplelist[i]['reg_mobile']}",
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              // FlatButton(
+              //   onPressed: () => print("object"),
+              //   child: Icon(Icons.close),
+              // )
+            ],
+          ),
+        ),
+      ),
+      separatorBuilder: (context, i) => Divider(),
+    );
+  }                                                                     //end of delivery grid view
+   buildPublicationGridView() {
+    return ListView.separated(
+      padding: EdgeInsets.all(0),
+      shrinkWrap: true,
+      itemCount: examplelist.length,
+      itemBuilder: (context, i) => InkWell(
+        onTap: () {
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Publication', id:examplelist[i]['publication_id'])));
+          print("IVIDE ENTHELUM PRINT CHEYY");
+        },
+        child: Card(
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "${examplelist[i]['publication_name']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        "${examplelist[i]['category']}",
+                        maxLines: 3,
+                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "${examplelist[i]['language']}",
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              // FlatButton(
+              //   onPressed: () => print("object"),
+              //   child: Icon(Icons.close),
+              // )
+            ],
+          ),
+        ),
+      ),
+      separatorBuilder: (context, i) => Divider(),
+    );
+  }                               //end of publication grid view
   String search;
   Icon actionIcon = new Icon(Icons.search);
   Widget build(BuildContext context) {
@@ -676,10 +858,17 @@ class _WholeListState extends State<WholeList> {
                       print(query);
                       ///[THIS IS MY STYLE OF SEARCHING A LIST WHICH IS TOTALLY FETCHED FROM THE API]
                       if (widget.datalist == "Customer") {
-                        var result= await http_get("search/${query.toLowerCase()}");
+                        var result= await http_get("customersearch/${query.toLowerCase()}");
                        setState(() {
                           examplelist=result.data["list"];
+                             
+                      
                        });
+                        // if(query.length==0){
+                        //   setState(() {
+                        //     getApi();
+                        //   });
+                        // }
                         // print(query);
                         // setState(() {
                         //   mainlistforsearch = examplelist
@@ -688,6 +877,32 @@ class _WholeListState extends State<WholeList> {
                         //           .contains(query.toLowerCase()))
                         //       .toList();
                         // });
+                  
+                      }
+                      else if(widget.datalist=="Publication"){
+                          var result= await http_get("publicationsearch/${query.toLowerCase()}");
+                       setState(() {
+                          examplelist=result.data["list"];
+                      //      if(query.length==0){
+                      //   setState(() {
+                      //    getApi();
+                      //   });
+                      // }
+                       });
+                       
+                      }
+                        else if(widget.datalist=="Delivery"){
+                          var result= await http_get("deliverysearch/${query.toLowerCase()}");
+                       setState(() {
+                          examplelist=result.data["list"];
+                         
+                      //   `   if(query.length==0){
+                      // setState(() {
+                      //   getApi();
+                      // });
+                      // }`
+                       });
+                       
                       }
                     },
                     decoration: new InputDecoration(
@@ -696,6 +911,9 @@ class _WholeListState extends State<WholeList> {
                         hintStyle: new TextStyle(color: Colors.white)),
                   );
                 } else {
+                 setState(() {
+                   examplelist=newexamplelist;
+                 });
                   actionIcon = new Icon(Icons.search);
                   appBarTitle = new Text("${widget.datalist}");
                 }
@@ -708,12 +926,16 @@ class _WholeListState extends State<WholeList> {
             children: <Widget>[
               if (widget.datalist == "Customer")
                 Expanded(
-                  child: buildGridView(),
+                  child: buildCustomerGridView(),
                 ),
               if (widget.datalist == "Publication")
                 Expanded(
-                  child: buildGridView(), //show another gridview
-                )
+                  child: buildPublicationGridView(), //show another gridview
+                ),
+                 if (widget.datalist == "Delivery")
+                Expanded(
+                  child: buildDeliveryGridView(), //show another gridview
+                ),
             ],
           ),
         ));
