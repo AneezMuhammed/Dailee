@@ -32,7 +32,8 @@ class _ComplaintsState extends State<Complaints> {
       );
 }
 deletecomplaint()async{
-  var result= await http_get("deletecomplaint/${widget.id}");
+  print("entered delete complaint");
+  var result= await http_get("ignorecomplaint/${widget.id}");
   if(result.data['code']==200){
     print("Deleted");
     Navigator.pop(context);
@@ -51,7 +52,7 @@ return Container(padding:EdgeInsets.all(20.0),
        SizedBox(height:10.0),
         Text("Email:${examplelist['email']}",style:TextStyle(fontSize: 20.0)),
       //  SizedBox(height:10.0),
-       new SizedBox(width:100.0,height:100.0,child:RaisedButton(child: Text('Mark as Viewed',style: TextStyle(fontSize:10.0),), onPressed: () {deletecomplaint();},))
+       new SizedBox(width:50.0,height:50.0,child:RaisedButton(child: Text('Mark as Viewed',style: TextStyle(fontSize:10.0),), onPressed: () {deletecomplaint();},))
         //  Text("Category:${newexamplelist['category']}",style:TextStyle(fontSize: 20.0)),
         //  SizedBox(height: 10.0),
         //    Text("Language:${newexamplelist['language']}",style:TextStyle(fontSize: 20.0)),
