@@ -1,3 +1,4 @@
+import 'package:dailee/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dailee/sign_in_screen.dart';
 import 'package:dailee/signup.dart';
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         //  visualDensity :VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignInScreen(),
+      home: Splash(),
     );
   }
 }
+String wholerole;
+String wholeid;

@@ -1,6 +1,10 @@
 import 'package:dailee/http.dart';
+import 'package:dailee/requestdeatailsview.dart';
+import 'package:dailee/sign_in_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'complaints.dart';
 import 'details.dart';
 
 class Admin extends StatefulWidget {
@@ -155,48 +159,22 @@ class Request extends StatefulWidget {
 }
 
 class _RequestState extends State<Request> {
-  List examplelist = [
-    {
-      "title": "Request1",
-      "content": "Content1",
-      "publication": "puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request2",
-      "content": "Content2",
-      "publication": "2puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request3",
-      "content": "Content3",
-      "publication": "p3uaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "4puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "First title",
-      "content": "Content1",
-      "publication": "5ksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Second title",
-      "content": "Content2",
-      "publication": "24usfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Third title",
-      "content": "Content3",
-      "publication": "124124124puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "0000000000puaksfkajsbfkjasbfkbasf"
-    },
-  ];
+  @override
+  String id;
+  void initState() {
+  
+    getApi(); //ask
+
+    super.initState();
+  }
+  getApi() async{
+    var result=await http_get("request");
+    setState(() {
+      examplelist=result.data['list'];
+      print(examplelist);
+    });
+  }
+  List examplelist = [];
   buildGridView() {
     return ListView.separated
     (
@@ -205,7 +183,9 @@ class _RequestState extends State<Request> {
       itemCount: examplelist.length,
       itemBuilder: (context, i) => 
       InkWell(
-        onTap: () {},
+        onTap: () {
+           Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['request_id'])));
+        },
         child: Container(
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,7 +196,7 @@ class _RequestState extends State<Request> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "${examplelist[i]['title']}",
+                      "${examplelist[i]['name']}",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.grey,
@@ -226,10 +206,21 @@ class _RequestState extends State<Request> {
                     SizedBox(
                       height: 10,
                     ),
+                     Text(
+                      "${examplelist[i]['category']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                      SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       width: 100,
                       child: Text(
-                        "${examplelist[i]['content']}",
+                        "${examplelist[i]['language']}",
                         maxLines: 3,
                         style: TextStyle(fontSize: 15, color: Colors.grey[500]),
                       ),
@@ -242,7 +233,7 @@ class _RequestState extends State<Request> {
           ),
         ),
       ),
-      separatorBuilder: (context, i) => Divider(),
+      separatorBuilder: (context, i) => Divider(color: Colors.black,),
     );
   }
 
@@ -268,46 +259,46 @@ class AgencyResponse extends StatefulWidget {
 
 class _AgencyResponseState extends State<AgencyResponse> {
   List examplelist = [
-    {
-      "title": "Request1",
-      "content": "Content1",
-      "publication": "puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request2",
-      "content": "Content2",
-      "publication": "2puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request3",
-      "content": "Content3",
-      "publication": "p3uaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "4puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "First title",
-      "content": "Content1",
-      "publication": "5ksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Second title",
-      "content": "Content2",
-      "publication": "24usfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Third title",
-      "content": "Content3",
-      "publication": "124124124puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "0000000000puaksfkajsbfkjasbfkbasf"
-    },
+    // {
+    //   "title": "Request1",
+    //   "content": "Content1",
+    //   "publication": "puaksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Request2",
+    //   "content": "Content2",
+    //   "publication": "2puaksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Request3",
+    //   "content": "Content3",
+    //   "publication": "p3uaksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Aneez",
+    //   "content": "Content4",
+    //   "publication": "4puaksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "First title",
+    //   "content": "Content1",
+    //   "publication": "5ksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Second title",
+    //   "content": "Content2",
+    //   "publication": "24usfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Third title",
+    //   "content": "Content3",
+    //   "publication": "124124124puaksfkajsbfkjasbfkbasf"
+    // },
+    // {
+    //   "title": "Aneez",
+    //   "content": "Content4",
+    //   "publication": "0000000000puaksfkajsbfkjasbfkbasf"
+    // },
   ];
   buildGridView() {
     return ListView.separated(
@@ -376,9 +367,93 @@ class Complaint extends StatefulWidget {
 }
 
 class _ComplaintState extends State<Complaint> {
+   void initState(){
+   getApi();
+   super.initState();
+ }
+ getApi() async{
+   var result= await http_get("complaint");
+  
+    setState(() {
+      examplelist=result.data['list'];
+      print(examplelist);
+    });
+ }
+ List examplelist=[];
+  buildGridView() {
+    return ListView.separated
+    (
+      padding: EdgeInsets.all(0),
+      shrinkWrap: true,
+      itemCount: examplelist.length,
+      itemBuilder: (context, i) => 
+      InkWell(
+        onTap: () async{
+           await Navigator.push(context,MaterialPageRoute(builder: (context)=>Complaints(id:examplelist[i]['complaint_id'])));
+           getApi();
+        },
+        child: Container(
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "${examplelist[i]['customer_name']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                     Text(
+                      "${examplelist[i]['reason_type']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                      SizedBox(
+                      height: 10,
+                    ),
+                    // Container(
+                    //   width: 100,
+                    //   child: Text(
+                    //     "${examplelist[i]['language']}",
+                    //     maxLines: 3,
+                    //     style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+      ),
+      separatorBuilder: (context, i) => Divider(color: Colors.black, thickness: 10,height: 10,),
+    );
+  }
   @override
   Widget build(BuildContext context) {            //here call old features through Container();
-    return Container();
+    return Container(
+      child:Column(
+        children: <Widget>[
+          Container(
+            child:Expanded(child:buildGridView()),
+          )
+        ],
+      ),
+      
+    );
   }
 }
 
@@ -453,12 +528,23 @@ class _MenuTabState extends State<MenuTab> {
             icon: Icon(Icons.cancel),
             title: "SignOut",
             press: () {
-              print("Sign Out");
+             
+              _logout(context);
             },
           ),
         ],
       ),
     );
+  }
+  _logout(BuildContext mcontext) async {
+    print("logout");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.of(mcontext).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new SignInScreen()),
+        (Route<dynamic> route) => false);
   }
 }
 
@@ -593,41 +679,7 @@ class _WholeListState extends State<WholeList> {
     });
   }
   }
-//  newgetApi() async{
-//    examplelist=[];
-//    print("new keriyo");
-//     // print("how ");
-//     if (widget.datalist == "Customer") {
-//       var result=await http_get("defaultcustomer");
-// //Step1.search the list from node; use http get ::here for customer
-//       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
-//       setState(() {
-//     // /.;
-//     print("default customer");
-//     examplelist=result.data['list'];
-//       });
-//     } else if (widget.datalist == "Publication") {
-//           var result=await http_get("defaultpublication");
-//       //Step1.search the list from node; use http get ::here for publication
-//       //store result as setState((){ examplelist=result.data['list']})    note:here i used sample example
-//       setState(() {
-//         print("default publication");
-//         examplelist=result.data['list'];
 
-//       });
-//     }
-//     else if (widget.datalist == "Delivery"){
-
-//     var result=await http_get("defaultdeliver");
-//     print(result);
-//     setState(() {
-//       print(result);
-//       print("default delivers");
-//       print(result);
-//       examplelist=result.data['list'];
-//     });
-//   }
-//   }
   Widget appBarTitle;
   List mainlistforsearch;
   @override

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:dailee/http.dart';
 import 'package:dailee/homescreen.dart';
 import 'package:dailee/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'admin.dart';
 import 'customer.dart';
 import 'deliverytoagency.dart';
+import 'main.dart';
 
 class SignInScreen extends StatelessWidget {
   List users = ["Customer", "Delivery to home", "Delivery to agency"];
@@ -140,7 +142,15 @@ class _SignFormState extends State<SignForm> {
   });
   print(result.data['code']);
   if (result.data['code'] == 200) {
-   
+   setState(() {
+          wholerole = result.data['role'];
+          wholeid = result.data['id'];
+         
+        });
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+
+         preferences.setString("role", wholerole);
+            preferences.setString("id", wholeid);
      if(result.data['role']=="Customer"){
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => new Customer()),
