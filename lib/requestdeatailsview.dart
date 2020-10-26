@@ -32,6 +32,15 @@ var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id
       }
       );
   }
+  ignorerequest() async{
+    print("entered ignore request");
+  var result= await http_get("ignorerequest/${widget.id}");
+  if(result.data['code']==200){
+    print("ignored");
+    Navigator.pop(context);
+  }
+  // print("Again delete");
+  }
   Map examplelist={};
   Map newexamplelist={};
    List samplelist=[];
@@ -50,7 +59,9 @@ var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id
          SizedBox(height: 10.0),
            Text("Language:${newexamplelist['language']}",style:TextStyle(fontSize: 20.0)),
          SizedBox(height: 10.0),
-        Row( children:<Widget>[RaisedButton(child: Text('Accept',style: TextStyle(fontSize:10.0),), onPressed: () {},),
+        Row( children:<Widget>[RaisedButton(child: Text('Accept',style: TextStyle(fontSize:10.0),), onPressed: () {
+          ignorerequest();
+        },),
         RaisedButton(child:Text('Deny',style: TextStyle(fontSize:10.0),), onPressed: () {
            Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagetorequest()));
         },)

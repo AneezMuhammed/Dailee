@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'complaints.dart';
 import 'details.dart';
+import 'messageSuccess.dart';
 
 class Admin extends StatefulWidget {
   @override
@@ -183,8 +184,9 @@ class _RequestState extends State<Request> {
       itemCount: examplelist.length,
       itemBuilder: (context, i) => 
       InkWell(
-        onTap: () {
-           Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['request_id'])));
+        onTap: () async{
+          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['request_id'])));
+          getApi();
         },
         child: Container(
           child: Row(
@@ -463,6 +465,21 @@ class MenuTab extends StatefulWidget {
 }
 
 class _MenuTabState extends State<MenuTab> {
+  void initState(){
+    getApi();
+    super.initState();
+  }
+  getApi()async{
+var result=await http_get("Menutab");
+ setState(() {
+   examplelist=result.data['list'];
+   print("aaaa");
+ });
+  }
+  List examplelist=[];
+  changeEmail(){
+
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -479,7 +496,7 @@ class _MenuTabState extends State<MenuTab> {
                   width: 20,
                 ),
                 Text(
-                  "Aneez Muhammed",
+                  "${examplelist[0]['name']}",
                   style: TextStyle(fontSize: 20),
                 )
               ],
@@ -491,8 +508,9 @@ class _MenuTabState extends State<MenuTab> {
           ),
           MenuButton(
             icon: Icon(Icons.email),
-            title: "Email",
+            title: "Change Email",
             press: () {
+              changeEmail();
               print("Email");
             },
           ),
@@ -500,6 +518,7 @@ class _MenuTabState extends State<MenuTab> {
             icon: Icon(Icons.vpn_key),
             title: "Change password",
             press: () {
+              // changePassword();
               print("Change Password");
             },
           ),
@@ -585,7 +604,26 @@ class Message extends StatefulWidget {
 
 class _MessageState extends State<Message> {
   String message;
+  void initstate(){
+    
+      // msgcontroller.clear();  
+    super.initState();
+  }
   @override
+  var msgcontroller=TextEditingController();
+
+  sendMessage()async{
+   var result=await http_get("sendMessage/${msgcontroller.text}");
+   print(result.data['code']);
+   if(result.data['code']==200){
+ await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesuccess()));
+  
+     msgcontroller.clear();
+   
+    
+   }
+  }
+  
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -603,7 +641,8 @@ class _MessageState extends State<Message> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              onChanged: (value) => message = value,
+              controller: msgcontroller,
+              // onChanged: (value) => message = value,
               maxLines: 2,
               decoration: new InputDecoration(
                 border: new OutlineInputBorder(
@@ -623,7 +662,11 @@ class _MessageState extends State<Message> {
             ),
           ),
           RaisedButton(
-            onPressed: () => print("$message"),
+            onPressed: (){
+              print("he");
+               if(msgcontroller.text.length!=0)
+               sendMessage();
+            },
             child: Text(
               "Send",
               style: TextStyle(fontSize: 20,color:Colors.white),),
