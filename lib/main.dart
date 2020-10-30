@@ -22,3 +22,4 @@ class MyApp extends StatelessWidget {
 }
 String wholerole;
 String wholeid;
+String wholezoneid;

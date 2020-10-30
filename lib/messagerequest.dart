@@ -1,11 +1,22 @@
+import 'package:dailee/http.dart';
+import 'package:dailee/messageSuccess.dart';
 import 'package:flutter/material.dart';
 
 class Messagetorequest extends StatefulWidget {
+    final String id;
+    
+     final String req_id;
+   Messagetorequest({this.id,this.req_id});
   @override
   _MessagetorequestState createState() => _MessagetorequestState();
 }
 
 class _MessagetorequestState extends State<Messagetorequest> {
+  String a;
+  void initState(){
+    a=widget.id;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String message;
@@ -46,8 +57,18 @@ class _MessagetorequestState extends State<Messagetorequest> {
                   ),
                 ),
           ),
+         // &${widget.req_id}&$message
           RaisedButton(
-                onPressed: () => print("$message"),
+                onPressed: ()async{
+                  print("send aayo");
+                  print(widget.req_id);
+                  print(a);
+                  var result=await http_post("replycustomer/$a&${widget.req_id}&$message");
+                  if(result.data['code']==200){
+                          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesuccess()));
+                          Navigator.pop(context);
+                  }
+                },
                 child: Text(
                   "Send",
                   style: TextStyle(fontSize: 20,color:Colors.white),),

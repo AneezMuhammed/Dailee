@@ -45,10 +45,11 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
                 end: Alignment.bottomLeft,
                 stops: [0.1, 0.5, 0.7, 0.9],
                 colors: [
-                  Colors.yellow[800],
-                  Colors.yellow[700],
-                  Colors.yellow[600],
-                  Colors.yellow[400],
+                
+                  Colors.blueGrey[900],
+                  Colors.blueGrey[900],
+                  Colors.blueGrey[900],
+                  Colors.blueGrey[900],
                 ],
               ),
             ),
@@ -61,7 +62,7 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
               ),
               Text(
                 "Requests",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
               SizedBox(height: 20),
               // Row(

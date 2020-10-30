@@ -185,6 +185,7 @@ class _RequestState extends State<Request> {
       itemBuilder: (context, i) => 
       InkWell(
         onTap: () async{
+          print(examplelist[i]['request_id']);
           await Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['request_id'])));
           getApi();
         },
@@ -472,14 +473,15 @@ class _MenuTabState extends State<MenuTab> {
   getApi()async{
 var result=await http_get("Menutab");
  setState(() {
-   examplelist=result.data['list'];
+   templist=result.data['list'][0];
+   print(templist);
    print("aaaa");
  });
   }
-  List examplelist=[];
-  changeEmail(){
+Map templist={};
+  // changeEmail(){
 
-  }
+  // }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -496,7 +498,7 @@ var result=await http_get("Menutab");
                   width: 20,
                 ),
                 Text(
-                  "${examplelist[0]['name']}",
+                  "${templist['name']}",
                   style: TextStyle(fontSize: 20),
                 )
               ],
@@ -510,7 +512,7 @@ var result=await http_get("Menutab");
             icon: Icon(Icons.email),
             title: "Change Email",
             press: () {
-              changeEmail();
+              // changeEmail();
               print("Email");
             },
           ),
@@ -616,14 +618,14 @@ class _MessageState extends State<Message> {
    var result=await http_get("sendMessage/${msgcontroller.text}");
    print(result.data['code']);
    if(result.data['code']==200){
- await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesuccess()));
+await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesuccess()));
   
      msgcontroller.clear();
    
     
    }
   }
-  
+
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -952,37 +954,25 @@ class _WholeListState extends State<WholeList> {
                     onChanged: (query) async {
                       print(query);
                       ///[THIS IS MY STYLE OF SEARCHING A LIST WHICH IS TOTALLY FETCHED FROM THE API]
-                      if (widget.datalist == "Customer") {
+                     if(query.isEmpty){
+                       getApi();
+                     }
+                     else{
+                        if (widget.datalist == "Customer") {
                         var result= await http_get("customersearch/${query.toLowerCase()}");
                        setState(() {
                           examplelist=result.data["list"];
                              
                       
                        });
-                        // if(query.length==0){
-                        //   setState(() {
-                        //     getApi();
-                        //   });
-                        // }
-                        // print(query);
-                        // setState(() {
-                        //   mainlistforsearch = examplelist
-                        //       .where((p) => p['name']                           //ask
-                        //           .toLowerCase()
-                        //           .contains(query.toLowerCase()))
-                        //       .toList();
-                        // });
+                      
                   
                       }
                       else if(widget.datalist=="Publication"){
                           var result= await http_get("publicationsearch/${query.toLowerCase()}");
                        setState(() {
                           examplelist=result.data["list"];
-                      //      if(query.length==0){
-                      //   setState(() {
-                      //    getApi();
-                      //   });
-                      // }
+                     
                        });
                        
                       }
@@ -991,14 +981,11 @@ class _WholeListState extends State<WholeList> {
                        setState(() {
                           examplelist=result.data["list"];
                          
-                      //   `   if(query.length==0){
-                      // setState(() {
-                      //   getApi();
-                      // });
-                      // }`
+                    
                        });
                        
                       }
+                     }
                     },
                     decoration: new InputDecoration(
                         prefixIcon: new Icon(Icons.search, color: Colors.white),

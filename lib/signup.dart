@@ -1,7 +1,10 @@
 import 'package:dailee/deliverytoagency.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'deliverytohome.dart';
 import 'http.dart';
+import 'package:dailee/main.dart';
 
 class SignUpPage extends StatefulWidget {
   final String usertype;
@@ -127,7 +130,7 @@ permission;
         children: <Widget>[
           TextFormField(
             decoration: new InputDecoration(
-              labelText: "Name for ${widget.usertype}",
+              labelText: "Enter Name",
               fillColor: Colors.white,
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
@@ -144,6 +147,29 @@ permission;
               }
             },
             keyboardType: TextInputType.emailAddress,
+            style: new TextStyle(
+              fontFamily: "Poppins",
+            ),
+          ),
+          TextFormField(
+            decoration: new InputDecoration(
+              labelText: "Phone Number ",
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+              //fillColor: Colors.green
+            ),
+            onChanged: (newValue) => deliveryphone = newValue,
+            validator: (val) {
+              if (val.length == 0) {
+                return "";
+              } else {
+                return null;
+              }
+            },
+            keyboardType: TextInputType.phone,
             style: new TextStyle(
               fontFamily: "Poppins",
             ),
@@ -252,26 +278,62 @@ permission;
   }
 
   }
-// signup ()async{
+signupDeliveryAgency()async{
   
-//   var result = await http_post("deliveryagency", {
-//     "email": email,
-//     "password": password,
-//     "name":namefordelivery,
-//     "phonenumber":deliveryphone,
-//     "agencyname":agencyname,
-//     "role":role
+  var result = await http_post("deliveryagency", {
+    "email": email,
+    "password": password,
+    "name":namefordelivery, 
+    "phonenumber":deliveryphone,
+    "agencyname":agencyname,
+    "role":role
 
-//   });
-//   print(result.data['code']);
-//   if (result.data['code'] == 200) {
-   
+  });
+  print(result.data['code']);
+  if (result.data['code'] == 200) {
+   setState(() {
+          wholerole = role;
+          wholeid = result.data['id'];
+          print(wholerole);
+          print(wholeid);
+        });
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+
+         preferences.setString("role", wholerole);
+            preferences.setString("id", wholeid);
      
-//     Navigator.of(context).pushAndRemoveUntil(
-//         MaterialPageRoute(builder: (context) => new DeliveryAgency()),
-//         (Route<dynamic> route) => false);
-//   }
-// }
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        (Route<dynamic> route) => false);
+  }
+}
+signupDeliveryHome()async{
+var result=await http_post("deliveryhome", {
+    "email": email,
+    "password": password,
+    "name":namefordelivery, 
+    "phonenumber":deliveryphone,
+    
+    "role":role });
+    if(result.data['code']==200){
+       setState(() {
+          wholerole = result.data['role'];
+          wholeid = result.data['id'];
+          // wholezoneid=result.data['zone_id'];
+          print(wholerole);
+          print(wholeid);
+        });
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+
+         preferences.setString("role", wholerole);
+            preferences.setString("id", wholeid);
+         Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryHome()),
+        (Route<dynamic> route) => false);
+    }
+
+ 
+}
 getLocation() async{
 Position position=await Geolocator.getCurrentPosition(desiredAccuracy:LocationAccuracy.low);
 latitude=position.latitude;
@@ -294,7 +356,7 @@ longitude=position.longitude;
                   Text("Welcome to sign up for ${widget.usertype}"),
                   SizedBox(height: 50),
                   if (widget.usertype == "Customer")showCustomerWidget(),
-                  if (widget.usertype == "Delivery to home") showDeliveryHomeWidget()(),
+                  if (widget.usertype == "Delivery to home") showDeliveryHomeWidget(),
                   if (widget.usertype == "Delivery to agency")
                     showDeliveryAgencyWidget(),
                   SizedBox(
@@ -360,7 +422,12 @@ longitude=position.longitude;
                             signupCustomer();
 
                         }
-                      //   
+                        if(widget.usertype=="Delivery to agency"){
+                          signupDeliveryAgency();
+                        }
+                       else if(widget.usertype=="Delivery to home"){
+                         signupDeliveryHome();
+                       }  
                         }
                     },
                     child: Text("Sign UP"),

@@ -1,3 +1,5 @@
+import 'package:dailee/deliverytoagency.dart';
+import 'package:dailee/deliverytohome.dart';
 import 'package:dailee/main.dart';
 import 'package:dailee/sign_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,17 +21,45 @@ class _SplashState extends State<Splash> {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
     setState(() {
+      wholezoneid=preferences.getString('zoneid');
       wholeid=preferences.getString('id');
       wholerole=preferences.getString('role');
     });
-
+    print(preferences.getString('id'));
+    print(preferences.getString('role'));
     if(preferences.getString('id')!=null){
+      print('hello');
       if(preferences.getString('role')=='Admin')
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>Admin()));
-      
+      {
+         Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =>Admin()),
+        (Route<dynamic> route) => false);
     }
+      
+      else if(preferences.getString('role')=='Delivery to home')
+      {
+          Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =>DeliveryHome()),
+        (Route<dynamic> route) => false);
+      }
+      else if(preferences.getString('role')=='Deliver to agency'){
+Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =>DeliveryAgency()),
+        (Route<dynamic> route) => false);
+      }
+    
+   else if(preferences.getString('role')==null){
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =>SignInScreen()),
+        (Route<dynamic> route) => false); 
+     }
+     }
+        
+     
     else{
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen())); 
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =>SignInScreen()),
+        (Route<dynamic> route) => false); 
     }
   }
   @override

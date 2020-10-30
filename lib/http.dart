@@ -8,7 +8,7 @@ class RequestResult {
 }
 
 const PROTOCOL = "http";
-var DOMAIN = "192.168.43.147:4000";
+var DOMAIN = "192.168.43.146:4000";
 // var reponse = "192.168.1.3:4000";
 
 // _onPressed() async {

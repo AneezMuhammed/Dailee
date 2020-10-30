@@ -1,4 +1,6 @@
+import 'package:dailee/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuButtonHome extends StatefulWidget {
   @override
@@ -79,14 +81,25 @@ class _MenuButtonHomeState extends State<MenuButtonHome> {
                 icon: Icon(Icons.cancel),
                 title: "SignOut",
                 press: () {
-                  print("Sign Out");
+                  _logout(context);
                 },
               ),
             ],
           ),
         ));
   }
+  _logout(BuildContext mcontext) async {
+    print("logout");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.of(mcontext).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new SignInScreen()),
+        (Route<dynamic> route) => false);
+  }
 }
+
 
 class SettingButton extends StatelessWidget {
   final String title;

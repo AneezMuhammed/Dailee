@@ -12,6 +12,7 @@ class Requestdetails extends StatefulWidget {
 
 class _RequestdetailsState extends State<Requestdetails> {
    void initState(){
+     print(widget.id);
     super.initState();
     getApi();
   }
@@ -20,10 +21,13 @@ class _RequestdetailsState extends State<Requestdetails> {
     
     samplelist=res.data['list'];
     print(samplelist);
+    print(samplelist[0]['customer_id']);
 
 var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id']}");
-
-      setState(() {
+print("hey guyss");
+     if(result.data['code']==200){
+        setState(() {
+        
         examplelist=result.data['list'][0];
         newexamplelist=samplelist[0];
         print("gap");
@@ -31,6 +35,10 @@ var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id
         print(examplelist);
       }
       );
+     }
+     else{
+       print("error annna");
+     }
   }
   ignorerequest() async{
     print("entered ignore request");
@@ -49,6 +57,7 @@ var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id
     
       child: Column(crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          
        Text("Publication Name:${newexamplelist['name']}",style:TextStyle(fontSize:20.0)),
        SizedBox(height:10.0),
        Text("Customer Name:${examplelist['customer_name']}",style:TextStyle(fontSize: 20.0)),
@@ -62,8 +71,11 @@ var result=await http_get("customerinrequestdetails/${samplelist[0]['customer_id
         Row( children:<Widget>[RaisedButton(child: Text('Accept',style: TextStyle(fontSize:10.0),), onPressed: () {
           ignorerequest();
         },),
-        RaisedButton(child:Text('Deny',style: TextStyle(fontSize:10.0),), onPressed: () {
-           Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagetorequest()));
+        RaisedButton(child:Text('Deny',style: TextStyle(fontSize:10.0),), onPressed: () async{
+          var result=await http_get("changestatus/${widget.id}");
+          if(result.data['code']==200)
+          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagetorequest(id:examplelist['customer_id'],req_id:widget.id)));
+          Navigator.pop(context);
         },)
         ])
         ],

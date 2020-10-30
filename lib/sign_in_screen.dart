@@ -1,9 +1,10 @@
+import 'package:dailee/deliverytohome.dart';
 import 'package:flutter/material.dart';
 import 'package:dailee/http.dart';
 import 'package:dailee/homescreen.dart';
 import 'package:dailee/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'deliverytohome.dart';
 import 'admin.dart';
 import 'customer.dart';
 import 'deliverytoagency.dart';
@@ -132,6 +133,7 @@ class _SignFormState extends State<SignForm> {
   String password;
   bool wait = false;
   bool remember = false;
+  int zone_id;
   signin ()async{
   
   var result = await http_post("login", {
@@ -145,12 +147,15 @@ class _SignFormState extends State<SignForm> {
    setState(() {
           wholerole = result.data['role'];
           wholeid = result.data['id'];
-         
+         wholezoneid= result.data['zone_id'];
         });
           SharedPreferences preferences = await SharedPreferences.getInstance();
 
          preferences.setString("role", wholerole);
             preferences.setString("id", wholeid);
+            preferences.setString("zoneid",wholezoneid);
+            print('hello1');
+            print(preferences.getString('role'));
      if(result.data['role']=="Customer"){
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => new Customer()),
@@ -159,7 +164,9 @@ class _SignFormState extends State<SignForm> {
    else if(result.data['role']=="Deliver to agency") {Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => new DeliveryAgency()),
         (Route<dynamic> route) => false);}
- 
+ else if(result.data['role']=="Delivery to home"){Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => new DeliveryHome()),
+        (Route<dynamic> route) => false);}
   else if(result.data['role']=="Admin"){
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => new  Admin()),
