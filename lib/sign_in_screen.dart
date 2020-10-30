@@ -1,3 +1,4 @@
+import 'package:dailee/deliverAgency.dart';
 import 'package:dailee/deliverytohome.dart';
 import 'package:flutter/material.dart';
 import 'package:dailee/http.dart';
@@ -7,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'deliverytohome.dart';
 import 'admin.dart';
 import 'customer.dart';
-import 'deliverytoagency.dart';
+
 import 'main.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -162,10 +163,10 @@ class _SignFormState extends State<SignForm> {
         (Route<dynamic> route) => false); 
      }
    else if(result.data['role']=="Deliver to agency") {Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        MaterialPageRoute(builder: (context) => new Deliveragency()),
         (Route<dynamic> route) => false);}
  else if(result.data['role']=="Delivery to home"){Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryHome()),
+        MaterialPageRoute(builder: (context) => new Deliveragency()),
         (Route<dynamic> route) => false);}
   else if(result.data['role']=="Admin"){
     Navigator.of(context).pushAndRemoveUntil(

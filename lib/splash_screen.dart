@@ -1,4 +1,4 @@
-import 'package:dailee/deliverytoagency.dart';
+import 'package:dailee/deliverAgency.dart';
 import 'package:dailee/deliverytohome.dart';
 import 'package:dailee/main.dart';
 import 'package:dailee/sign_in_screen.dart';
@@ -44,7 +44,7 @@ class _SplashState extends State<Splash> {
       }
       else if(preferences.getString('role')=='Deliver to agency'){
 Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) =>DeliveryAgency()),
+        MaterialPageRoute(builder: (context) =>Deliveragency()),
         (Route<dynamic> route) => false);
       }
     

@@ -1,3 +1,5 @@
+import 'package:dailee/http.dart';
+import 'package:dailee/main.dart';
 import 'package:dailee/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +10,17 @@ class MenuButtonHome extends StatefulWidget {
 }
 
 class _MenuButtonHomeState extends State<MenuButtonHome> {
+  void initState(){
+    getApi();
+    super.initState();
+  }
+  getApi()async{
+    var result=await http_get("deliverprofile/$wholeid");
+    setState(() {
+      examplelist=result.data['list'];
+    });
+  }
+  List examplelist=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +45,7 @@ class _MenuButtonHomeState extends State<MenuButtonHome> {
                       width: 20,
                     ),
                     Text(
-                      "Aneez Muhammed",
+                      "${examplelist[0]['name']}",
                       style: TextStyle(fontSize: 20),
                     )
                   ],

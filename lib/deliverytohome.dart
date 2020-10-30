@@ -20,7 +20,7 @@ class _DeliveryHomeState extends State<DeliveryHome> {
     super.initState();
   }
   getApi()  async{
-    print("hello");
+    print("hello aaaa");
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // wholezoneid=preferences.getString("zoneid");
   print(wholezoneid);

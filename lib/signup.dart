@@ -1,4 +1,4 @@
-import 'package:dailee/deliverytoagency.dart';
+import 'package:dailee/deliverAgency.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -273,7 +273,7 @@ permission;
    
      
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        MaterialPageRoute(builder: (context) => new Deliveragency()),
         (Route<dynamic> route) => false);
   }
 
@@ -303,7 +303,7 @@ signupDeliveryAgency()async{
             preferences.setString("id", wholeid);
      
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new DeliveryAgency()),
+        MaterialPageRoute(builder: (context) => new Deliveragency()),
         (Route<dynamic> route) => false);
   }
 }

@@ -1,27 +1,58 @@
+import 'package:dailee/http.dart';
 import 'package:dailee/profileedit.dart';
 import 'package:flutter/material.dart';
-
-class DeliveryAgency extends StatefulWidget {
+class Deliveragency extends StatefulWidget {
   @override
-  _DeliveryAgencyState createState() => _DeliveryAgencyState();
+  _DeliveragencyState createState() => _DeliveragencyState();
 }
 
-class _DeliveryAgencyState extends State<DeliveryAgency> {
-  showpub(String pub) {
+class _DeliveragencyState extends State<Deliveragency> {
+  @override
+  void initState(){
+    super.initState();
+    print("asdfgh");
+    getApi();
+  }
+  getApi()async{
+    print('ngey');
+var result= await http_get("deliver2agencyrequest");
+setState(() {
+  examplelist=result.data['list'];
+});
+  }
+  confirm(){
+
+  }
+  showpub(var pub) {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         int selectedRadio = 0;
         return AlertDialog(
           title: Text("Publications"),
-          content: Text(pub),
+          content:Container(child:Column(children:<Widget>[Text(pub['name']),SizedBox(height:5.0),Text(pub['category']),SizedBox(height:5.0),Text(pub['language'])],),height:100,width: 100,) ,
           actions: <Widget>[
             FlatButton(
-              onPressed: () => print("object"),
+              onPressed: () async{
+                  var result=await http_get("confirmrequest/${pub['request_id']}");
+                  print(result.data['code']);
+                   if (result.data['code']==200){
+                        getApi();
+                        Navigator.pop(context);
+                   }
+                    
+                  
+              },
               child: Icon(Icons.check),
             ),
             FlatButton(
-              onPressed: () => print("object"),
+              onPressed: ()async{
+                var result=await http_get("confirmrequest/${pub['request_id']}");
+                   if (result.data['code']==200){
+                        getApi();
+                        Navigator.pop(context);
+                   }
+                print("object");},
               child: Icon(Icons.close),
             )
           ],
@@ -65,36 +96,7 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
               SizedBox(height: 20),
-              // Row(
-              //   textDirection: TextDirection.ltr,
-              //   children: <Widget>[
-              //     Expanded(
-              //       child: TextField(
-              //         onChanged: (value) => search = value,
-              //         decoration: new InputDecoration(
-              //           border: new OutlineInputBorder(
-              //             borderRadius: const BorderRadius.all(
-              //               const Radius.circular(10.0),
-              //             ),
-              //           ),
-              //           filled: true,
-              //           hintStyle: new TextStyle(color: Colors.grey[800]),
-              //           hintText: "Search Request",
-              //           fillColor: Colors.white70,
-              //           // suffixIcon: IconButton(
-              //           //   icon: Icon(Icons.search),
-              //           //   onPressed: () {},
-              //           // ),
-              //         ),
-              //       ),
-              //     ),
-              //     IconButton(
-              //         icon: Icon(Icons.search),
-              //         onPressed: () {
-              //           print(search);
-              //         })
-              //   ],
-              // )
+           
             ]),
           ),
         ],
@@ -102,49 +104,8 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
     );
   }
 
-/////////////[THis is how a content fetched from database looks like   "ANEEZ MUHAMMED"]
-  List examplelist = [
-    {
-      "title": "Request1",
-      "content": "Content1",
-      "publication": "puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request2",
-      "content": "Content2",
-      "publication": "2puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Request3",
-      "content": "Content3",
-      "publication": "p3uaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "4puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "First title",
-      "content": "Content1",
-      "publication": "5ksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Second title",
-      "content": "Content2",
-      "publication": "24usfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Third title",
-      "content": "Content3",
-      "publication": "124124124puaksfkajsbfkjasbfkbasf"
-    },
-    {
-      "title": "Aneez",
-      "content": "Content4",
-      "publication": "0000000000puaksfkajsbfkjasbfkbasf"
-    },
-  ];
+// /////////////[THis is how a content fetched from database looks like   "ANEEZ MUHAMMED"]
+  List examplelist = [];
   buildGridView() {
     return ListView.separated(
       padding: EdgeInsets.all(0),
@@ -152,7 +113,7 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
       itemCount: examplelist.length,
       itemBuilder: (context, i) => InkWell(
         onTap: () {
-          showpub(examplelist[i]['publication']);
+          showpub(examplelist[i]);
         },
         child: Container(
           child: Row(
@@ -164,7 +125,7 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "${examplelist[i]['title']}",
+                      "${examplelist[i]['name']}",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.grey,
@@ -177,7 +138,15 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
                     Container(
                       width: 100,
                       child: Text(
-                        "${examplelist[i]['content']}",
+                        "${examplelist[i]['category']}",
+                        maxLines: 3,
+                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      ),
+                    ),
+                   Container(
+                      width: 100,
+                      child: Text(
+                        "${examplelist[i]['language']}",
                         maxLines: 3,
                         style: TextStyle(fontSize: 15, color: Colors.grey[500]),
                       ),
@@ -197,10 +166,12 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
   String search;
   @override
   Widget build(BuildContext context) {
+    print("hello");
+   
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
@@ -222,7 +193,7 @@ class _DeliveryAgencyState extends State<DeliveryAgency> {
       ),
       body: Container(
         child: Column(
-          children: <Widget>[header(), Expanded(child: buildGridView())],
+          children: <Widget>[header(),Expanded(child: buildGridView())],
         ),
       ),
     );
