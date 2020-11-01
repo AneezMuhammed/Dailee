@@ -58,7 +58,7 @@ print("hey guyss");
       child: Column(crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           
-       Text("Publication Name:${newexamplelist['name']}",style:TextStyle(fontSize:20.0)),
+       Text("Publication Name:${newexamplelist['pub_name']}",style:TextStyle(fontSize:20.0)),
        SizedBox(height:10.0),
        Text("Customer Name:${examplelist['customer_name']}",style:TextStyle(fontSize: 20.0)),
        SizedBox(height:10.0),
@@ -67,6 +67,8 @@ print("hey guyss");
          Text("Category:${newexamplelist['category']}",style:TextStyle(fontSize: 20.0)),
          SizedBox(height: 10.0),
            Text("Language:${newexamplelist['language']}",style:TextStyle(fontSize: 20.0)),
+         SizedBox(height: 10.0),
+          Text("Language:${newexamplelist['quantity']}",style:TextStyle(fontSize: 20.0)),
          SizedBox(height: 10.0),
         Row( children:<Widget>[RaisedButton(child: Text('Accept',style: TextStyle(fontSize:10.0),), onPressed: () {
           ignorerequest();

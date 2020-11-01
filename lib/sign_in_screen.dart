@@ -166,7 +166,7 @@ class _SignFormState extends State<SignForm> {
         MaterialPageRoute(builder: (context) => new Deliveragency()),
         (Route<dynamic> route) => false);}
  else if(result.data['role']=="Delivery to home"){Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new Deliveragency()),
+        MaterialPageRoute(builder: (context) => new DeliveryHome()),
         (Route<dynamic> route) => false);}
   else if(result.data['role']=="Admin"){
     Navigator.of(context).pushAndRemoveUntil(

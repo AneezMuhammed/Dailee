@@ -25,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String deliveryphone;
   String role;
   String address;
+  String zone_key;
 String type;
 String phone;
 double latitude;
@@ -173,6 +174,31 @@ permission;
             style: new TextStyle(
               fontFamily: "Poppins",
             ),
+            
+          ),
+           TextFormField(
+            decoration: new InputDecoration(
+              labelText: "Zone Key ",
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+              //fillColor: Colors.green
+            ),
+            onChanged: (newValue) => zone_key = newValue,
+            validator: (val) {
+              if (val.length == 0) {
+                return "";
+              } else {
+                return null;
+              }
+            },
+            keyboardType: TextInputType.phone,
+            style: new TextStyle(
+              fontFamily: "Poppins",
+            ),
+            
           ),
         ],
       ),
@@ -313,7 +339,7 @@ var result=await http_post("deliveryhome", {
     "password": password,
     "name":namefordelivery, 
     "phonenumber":deliveryphone,
-    
+    "zone_key":zone_key,
     "role":role });
     if(result.data['code']==200){
        setState(() {

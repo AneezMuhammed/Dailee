@@ -30,11 +30,11 @@ setState(() {
         int selectedRadio = 0;
         return AlertDialog(
           title: Text("Publications"),
-          content:Container(child:Column(children:<Widget>[Text(pub['name']),SizedBox(height:5.0),Text(pub['category']),SizedBox(height:5.0),Text(pub['language'])],),height:100,width: 100,) ,
+          content:Container(child:Column(children:<Widget>[Text(pub['pub_name']),SizedBox(height:5.0),Text(pub['category']),SizedBox(height:5.0),Text(pub['language'])],),height:100,width: 100,) ,
           actions: <Widget>[
             FlatButton(
               onPressed: () async{
-                  var result=await http_get("confirmrequest/${pub['request_id']}");
+                  var result=await http_get("confirmrequest/${pub['newpub_id']}");
                   print(result.data['code']);
                    if (result.data['code']==200){
                         getApi();
@@ -47,7 +47,7 @@ setState(() {
             ),
             FlatButton(
               onPressed: ()async{
-                var result=await http_get("confirmrequest/${pub['request_id']}");
+                var result=await http_get("confirmrequest/${pub['newpub_id']}");
                    if (result.data['code']==200){
                         getApi();
                         Navigator.pop(context);
@@ -125,7 +125,7 @@ setState(() {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "${examplelist[i]['name']}",
+                      "${examplelist[i]['pub_name']}",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.grey,

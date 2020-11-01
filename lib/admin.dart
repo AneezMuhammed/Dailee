@@ -185,8 +185,8 @@ class _RequestState extends State<Request> {
       itemBuilder: (context, i) => 
       InkWell(
         onTap: () async{
-          print(examplelist[i]['request_id']);
-          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['request_id'])));
+          print(examplelist[i]['newpub_id']);
+          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['newpub_id'])));
           getApi();
         },
         child: Container(
@@ -199,7 +199,7 @@ class _RequestState extends State<Request> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "${examplelist[i]['name']}",
+                      "${examplelist[i]['pub_name']}",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.grey,
@@ -226,6 +226,18 @@ class _RequestState extends State<Request> {
                         "${examplelist[i]['language']}",
                         maxLines: 3,
                         style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      ),
+                      
+                    ),
+                    SizedBox(
+                      height:10
+                    ),
+                    Text(
+                      "${examplelist[i]['quantity']}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
