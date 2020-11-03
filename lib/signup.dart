@@ -1,3 +1,4 @@
+import 'package:dailee/customer.dart';
 import 'package:dailee/deliverAgency.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -87,7 +88,7 @@ permission;
             onChanged: (newValue) => address = newValue,
             validator: (val) {
               if (val.length == 0) {
-                return "Email cannot be empty";
+                return "";
               } else {
                 return null;
               }
@@ -110,7 +111,7 @@ permission;
             onChanged: (newValue) => phone = newValue,
             validator: (val) {
               if (val.length == 0) {
-                return "Email cannot be empty";
+                return "";
               } else {
                 return null;
               }
@@ -299,7 +300,7 @@ permission;
    
      
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => new Deliveragency()),
+        MaterialPageRoute(builder: (context) => new Customer()),
         (Route<dynamic> route) => false);
   }
 
@@ -345,7 +346,7 @@ var result=await http_post("deliveryhome", {
        setState(() {
           wholerole = result.data['role'];
           wholeid = result.data['id'];
-          // wholezoneid=result.data['zone_id'];
+          wholezoneid=result.data['zone_id'];
           print(wholerole);
           print(wholeid);
         });
@@ -353,6 +354,7 @@ var result=await http_post("deliveryhome", {
 
          preferences.setString("role", wholerole);
             preferences.setString("id", wholeid);
+            preferences.setString("zoneid",wholezoneid);
          Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => new DeliveryHome()),
         (Route<dynamic> route) => false);
