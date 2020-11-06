@@ -18,7 +18,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _tabController = new TabController(length: 6, vsync: this);
+    _tabController = new TabController(length: 5, vsync: this);
     super.initState();
   }
 
@@ -28,6 +28,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+      
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -43,9 +44,9 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
               // ])
               ),
         ),
-        elevation: 0,
+        elevation: 10,
         title: Text(
-          "Dailee:Admin",
+          "Dailee:Manager",
           style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -60,9 +61,9 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
             new Tab(
               icon: new Icon(Icons.receipt),
             ),
-            new Tab(                                             //icons on admin appbar
-              icon: new Icon(Icons.room_service),
-            ),
+            // new Tab(                                             //icons on admin appbar
+            //   icon: new Icon(Icons.room_service),
+            // ),
             new Tab(
               icon: new Icon(Icons.warning),
             ),
@@ -84,7 +85,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
         children: [
           Details(),
           Request(),
-          AgencyResponse(),
+          // AgencyResponse(),
           Complaint(),
           Message(),
           MenuTab()
@@ -107,6 +108,17 @@ class _DetailsState extends State<Details> {
       onTap: fun,
       child: Card(
           child: Container(
+             decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
         height: 100,
         child: Center(
           child: ListTile(
@@ -127,23 +139,23 @@ class _DetailsState extends State<Details> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          carbutton(Icon(Icons.perm_contact_calendar), "Publications", () {
+          carbutton(Icon(Icons.library_books), "Publications", () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => WholeList("Publication")));
           }),
-          carbutton(Icon(Icons.perm_contact_calendar), "Subscription", () {
+          carbutton(Icon(Icons.monetization_on), "Amount", () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => WholeList("Subscription")));
+                    builder: (context) => WholeList("Amount")));
           }),
-          carbutton(Icon(Icons.perm_contact_calendar), "Customers", () {
+          carbutton(Icon(Icons.people),"Customers", () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WholeList("Customer")));
           }),
-          carbutton(Icon(Icons.perm_contact_calendar), "Delivery Boys", () {
+          carbutton(Icon(Icons.directions_bike), "Delivery Boys", () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WholeList("Delivery")));
           }),
@@ -183,72 +195,87 @@ class _RequestState extends State<Request> {
       shrinkWrap: true,
       itemCount: examplelist.length,
       itemBuilder: (context, i) => 
-      InkWell(
-        onTap: () async{
-          print(examplelist[i]['newpub_id']);
-          await Navigator.push(context,MaterialPageRoute(builder: (context)=>Requestdetails(id:examplelist[i]['newpub_id'])));
-          getApi();
-        },
-        child: Container(
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${examplelist[i]['pub_name']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+      Card(
+        
+              child: InkWell(
+          onTap: () async{
+            print(examplelist[i]['newpub_id']);
+          await showDialog(context:context,builder:(BuildContext context)
+          { return Requestdetails(id:examplelist[i]['newpub_id']);});
+            getApi();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 12,
+            color: Colors.grey.withOpacity(0.5),
+          ),
+        ],
+      ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${examplelist[i]['pub_name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                     Text(
-                      "${examplelist[i]['category']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                       SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "${examplelist[i]['language']}",
-                        maxLines: 3,
-                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                        height: 10,
                       ),
-                      
-                    ),
-                    SizedBox(
-                      height:10
-                    ),
-                    Text(
-                      "${examplelist[i]['quantity']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+                       Text(
+                        "${examplelist[i]['category']}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                        // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Container(
+                      //   width: 100,
+                      //   child: Text(
+                      //     "${examplelist[i]['language']}",
+                      //     maxLines: 3,
+                      //     style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      //   ),
+                        
+                      // ),
+                      // SizedBox(
+                      //   height:10
+                      // ),
+                      // Text(
+                      //   "${examplelist[i]['quantity']}",
+                      //   style: TextStyle(
+                      //     fontSize: 25,
+                      //     color: Colors.grey,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
-            ],
+                Spacer(),
+              ],
+            ),
           ),
         ),
       ),
-      separatorBuilder: (context, i) => Divider(color: Colors.black,),
+      separatorBuilder: (context, i) => SizedBox(),
     );
   }
 
@@ -257,6 +284,7 @@ class _RequestState extends State<Request> {
     return Container(
       child: Column(
         children: <Widget>[
+          SizedBox(height: 10,),
           Container(
             child: Expanded(child: buildGridView()),
           )
@@ -402,59 +430,72 @@ class _ComplaintState extends State<Complaint> {
       shrinkWrap: true,
       itemCount: examplelist.length,
       itemBuilder: (context, i) => 
-      InkWell(
-        onTap: () async{
-           await Navigator.push(context,MaterialPageRoute(builder: (context)=>Complaints(id:examplelist[i]['complaint_id'])));
-           getApi();
-        },
-        child: Container(
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${examplelist[i]['customer_name']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+      Card(
+              child: InkWell(
+          onTap: () async{
+             await showDialog(context:context,builder:(BuildContext context){return Complaints(id:examplelist[i]['complaint_id']);});
+             getApi();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${examplelist[i]['customer_name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                     Text(
-                      "${examplelist[i]['reason_type']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                       SizedBox(
-                      height: 10,
-                    ),
-                    // Container(
-                    //   width: 100,
-                    //   child: Text(
-                    //     "${examplelist[i]['language']}",
-                    //     maxLines: 3,
-                    //     style: TextStyle(fontSize: 15, color: Colors.grey[500]),
-                    //   ),
-                    // ),
-                  ],
+                        height: 10,
+                      ),
+                       Text(
+                        "${examplelist[i]['reason_type']}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                        SizedBox(
+                        height: 10,
+                      ),
+                      // Container(
+                      //   width: 100,
+                      //   child: Text(
+                      //     "${examplelist[i]['language']}",
+                      //     maxLines: 3,
+                      //     style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
-            ],
+                Spacer(),
+              ],
+            ),
           ),
         ),
       ),
-      separatorBuilder: (context, i) => Divider(color: Colors.black, thickness: 10,height: 10,),
+      separatorBuilder: (context, i) => SizedBox(),
     );
   }
   @override
@@ -520,43 +561,43 @@ Map templist={};
             thickness: 1,
             height: 1,
           ),
+          // MenuButton(
+          //   icon: Icon(Icons.email),
+          //   title: "Change Email",
+          //   press: () {
+          //     // changeEmail();
+          //     print("Email");
+          //   },
+          // ),
+          // MenuButton(
+          //   icon: Icon(Icons.vpn_key),
+          //   title: "Change password",
+          //   press: () {
+          //     // changePassword();
+          //     print("Change Password");
+          //   },
+          // ),
           MenuButton(
-            icon: Icon(Icons.email),
-            title: "Change Email",
+            icon: Icon(Icons.mail),
+            title:  "${templist['email']}",
             press: () {
-              // changeEmail();
-              print("Email");
+              print("sdfsf");
             },
           ),
-          MenuButton(
-            icon: Icon(Icons.vpn_key),
-            title: "Change password",
-            press: () {
-              // changePassword();
-              print("Change Password");
-            },
-          ),
-          MenuButton(
-            icon: Icon(Icons.vpn_key),
-            title: "Email",
-            press: () {
-              print("Email");
-            },
-          ),
-          MenuButton(
-            icon: Icon(Icons.vpn_key),
-            title: "Email",
-            press: () {
-              print("Email");
-            },
-          ),
-          MenuButton(
-            icon: Icon(Icons.vpn_key),
-            title: "Email",
-            press: () {
-              print("Email");
-            },
-          ),
+          // MenuButton(
+          //   icon: Icon(Icons.vpn_key),
+          //   title: "Email",
+          //   press: () {
+          //     print("Email");
+          //   },
+          // ),
+          // MenuButton(
+          //   icon: Icon(Icons.vpn_key),
+          //   title: "Email",
+          //   press: () {
+          //     print("Email");
+          //   },
+          // ),
           MenuButton(
             icon: Icon(Icons.cancel),
             title: "SignOut",
@@ -647,7 +688,7 @@ await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesucces
             // padding:EdgeInsets.all(8.0),
             // child:
             Padding(padding: const EdgeInsets.all(20),
-                          child: Text("Message Customers and do business",style:TextStyle(fontSize:35) ,
+                          child: Text("Message Customers and do business",style:TextStyle(fontSize:25) ,
           ),
             ),
           // ),
@@ -675,6 +716,7 @@ await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagesucces
               ),
             ),
           ),
+          
           RaisedButton(
             onPressed: (){
               print("he");
@@ -735,6 +777,13 @@ class _WholeListState extends State<WholeList> {
       newexamplelist=examplelist;
     });
   }
+  else if (widget.datalist == "Amount"){
+    var result=await http_get("Amountdefault");
+    print(result);
+    setState(() {
+      examplelist=result.data['list'];
+    });
+  }
   }
 
   Widget appBarTitle;
@@ -756,60 +805,74 @@ class _WholeListState extends State<WholeList> {
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: examplelist.length,
-      itemBuilder: (context, i) => InkWell(
-        onTap: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Customer', id:examplelist[i]['customer_id'])));
-          print("IVIDE ENTHELUM PRINT CHEYY");
-        },
-        child: Card(
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${examplelist[i]['customer_name']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+      itemBuilder: (context, i) => Card(
+              child: InkWell(
+          onTap: () {
+            showDialog(context: context,builder: (BuildContext context){
+            return Adminviewdetails(role: 'Customer', id:examplelist[i]['customer_id']);});
+            print("IVIDE ENTHELUM PRINT CHEYY");
+          },
+          child: Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${examplelist[i]['customer_name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "${examplelist[i]['email']}",
-                        maxLines: 3,
-                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Spacer(),
-              Column(
-                children: <Widget>[
-                  Text(
-                    "${examplelist[i]['reg_mobile']}",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      Container(
+                        width: 200,
+                        child: Text(
+                          "${examplelist[i]['email']}",
+                          maxLines: 3,
+                          style: TextStyle(fontSize: 15, color: Colors.black.withOpacity(0.7)),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              // FlatButton(
-              //   onPressed: () => print("object"),
-              //   child: Icon(Icons.close),
-              // )
-            ],
+                ),
+                // Spacer(),
+                // Column(
+                //   children: <Widget>[
+                //     Text(
+                //       "${examplelist[i]['reg_mobile']}",
+                //       style: TextStyle(
+                //         fontSize: 25,
+                //         color: Colors.grey,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // FlatButton(
+                //   onPressed: () => print("object"),
+                //   child: Icon(Icons.close),
+                // )
+              ],
+            ),
           ),
         ),
       ),
@@ -821,60 +884,73 @@ class _WholeListState extends State<WholeList> {
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: examplelist.length,
-      itemBuilder: (context, i) => InkWell(
-        onTap: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Delivers', id:examplelist[i]['deliver_id'])));
-          print("IVIDE ENTHELUM PRINT CHEYY");
-        },
-        child: Card(
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${examplelist[i]['name']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+      itemBuilder: (context, i) => Card(
+              child: InkWell(
+          onTap: () {
+           showDialog(context:context , builder : (BuildContext context)=>Adminviewdetails(role: 'Delivers', id:examplelist[i]['deliver_id']));
+          
+          },
+          child: Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${examplelist[i]['name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "${examplelist[i]['email']}",
-                        maxLines: 3,
-                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Spacer(),
-              Column(
-                children: <Widget>[
-                  Text(
-                    "${examplelist[i]['reg_mobile']}",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      Container(
+                        width: 200,
+                        child: Text(
+                          "${examplelist[i]['email']}",
+                          maxLines: 3,
+                          style: TextStyle(fontSize: 15, color: Colors.black.withOpacity(0.5)),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              // FlatButton(
-              //   onPressed: () => print("object"),
-              //   child: Icon(Icons.close),
-              // )
-            ],
+                ),
+                // Spacer(),
+                // Column(
+                //   children: <Widget>[
+                //     Text(
+                //       "${examplelist[i]['reg_mobile']}",
+                //       style: TextStyle(
+                //         fontSize: 25,
+                //         color: Colors.grey,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // FlatButton(
+                //   onPressed: () => print("object"),
+                //   child: Icon(Icons.close),
+                // )
+              ],
+            ),
           ),
         ),
       ),
@@ -886,72 +962,173 @@ class _WholeListState extends State<WholeList> {
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: examplelist.length,
-      itemBuilder: (context, i) => InkWell(
+      itemBuilder: (context, i) => 
+        Card(child:InkWell(
         onTap: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Publication', id:examplelist[i]['publication_id'])));
+          showDialog(context: context,builder: (BuildContext context){
+           return Adminviewdetails(role: 'Publication', id:examplelist[i]['publication_id']);
+          });
+          // Navigator.push(context,MaterialPageRoute(builder: (context)=>Adminviewdetails(role: 'Publication', id:examplelist[i]['publication_id'])));
           print("IVIDE ENTHELUM PRINT CHEYY");
         },
-        child: Card(
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${examplelist[i]['publication_name']}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
+         
+          child: Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${examplelist[i]['publication_name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "${examplelist[i]['category']}",
-                        maxLines: 3,
-                        style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Spacer(),
-              Column(
-                children: <Widget>[
-                  Text(
-                    "${examplelist[i]['language']}",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                     Row(children:<Widget>[ Icon(Icons.library_books,color: Colors.black54,size: 18,),Container(
+                        width: 100,
+                        child: Text(
+                          "${examplelist[i]['category']}",
+                          maxLines: 3,
+                          style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                        ),
+                      ),])
+                    ],
                   ),
-                ],
-              ),
-              // FlatButton(
-              //   onPressed: () => print("object"),
-              //   child: Icon(Icons.close),
-              // )
-            ],
+                ),
+                Spacer(),
+                // Column(
+                //   children: <Widget>[
+                //     Text(
+                //       "${examplelist[i]['language']}",
+                //       style: TextStyle(
+                //         fontSize:12,
+                //         color: Colors.grey,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // FlatButton(
+                //   onPressed: () => print("object"),
+                //   child: Icon(Icons.close),
+                // )
+              ],
+            ),
           ),
         ),
       ),
       separatorBuilder: (context, i) => Divider(),
     );
-  }                               //end of publication grid view
+  } 
+   buildAmountGridView() {
+    return ListView.separated(
+      padding: EdgeInsets.all(0),
+      shrinkWrap: true,
+      itemCount: examplelist.length,
+      itemBuilder: (context, i) => Card(
+              child: InkWell(
+          onTap: () {
+            print(examplelist);
+            showDialog(context: context,builder: (BuildContext context){
+
+           return Adminviewdetails(role: 'Amount', id:examplelist[i]['deliverer_id']);});
+            print("IVIDE ENTHELUM PRINT CHEYY");
+          },
+          child:Container(
+            decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.9),
+          ),
+        ],
+      ),
+            child:Container( height:75,child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                     children:<Widget>[
+                     Row(children: <Widget>[Icon(Icons.business), Text(
+                        "${examplelist[i]['Agency_Name']}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black.withOpacity(0.7),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),],
+                     ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Container(
+                      //   width: 100,
+                      //   child: Text(
+                      //     "${examplelist[i]['email']}",
+                      //     maxLines: 3,
+                      //     style: TextStyle(fontSize: 15, color: Colors.grey[500]),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                // Spacer(),
+                // Column(
+                //   children: <Widget>[
+                //     Text(
+                //       "${examplelist[i]['reg_mobile']}",
+                //       style: TextStyle(
+                //         fontSize: 25,
+                //         color: Colors.grey,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // FlatButton(
+                //   onPressed: () => print("object"),
+                //   child: Icon(Icons.close),
+                // )
+              ],
+            ),)
+          ),
+        ),
+      ),
+      separatorBuilder: (context, i) => Divider(),
+    );
+  }                              //end of publication grid view
   String search;
   Icon actionIcon = new Icon(Icons.search);
   Widget build(BuildContext context) {
     return Scaffold(
+     
         appBar:
-            new AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
+            new AppBar( elevation: 10,backgroundColor: 
+           Colors.blueGrey[900],centerTitle: true, title: appBarTitle, actions: <Widget>[
           new IconButton(
             icon: actionIcon,
             onPressed: () {
@@ -988,6 +1165,14 @@ class _WholeListState extends State<WholeList> {
                        });
                        
                       }
+                        else if(widget.datalist=="Amount"){
+                          var result= await http_get("Agencyinamountsearch/${query.toLowerCase()}");
+                       setState(() {
+                          examplelist=result.data["list"];
+                     
+                       });
+                       
+                      }
                         else if(widget.datalist=="Delivery"){
                           var result= await http_get("deliverysearch/${query.toLowerCase()}");
                        setState(() {
@@ -1018,6 +1203,7 @@ class _WholeListState extends State<WholeList> {
         body: Container(
           child: Column(
             children: <Widget>[
+              SizedBox(height: 20,),
               if (widget.datalist == "Customer")
                 Expanded(
                   child: buildCustomerGridView(),
@@ -1030,7 +1216,12 @@ class _WholeListState extends State<WholeList> {
                 Expanded(
                   child: buildDeliveryGridView(), //show another gridview
                 ),
+                 if (widget.datalist == "Amount")
+                Expanded(
+                  child: buildAmountGridView(), //show another gridview
+                ),
             ],
+          
           ),
         ));
   }

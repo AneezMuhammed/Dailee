@@ -55,9 +55,10 @@ print("hey guyss");
    requestdetails(){
     return Container(padding:EdgeInsets.all(20.0),
     
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          
+          Center(child: Text("Details",style:TextStyle(fontSize:23.0))),
+          Divider(thickness: 1,color:Colors.black),
        Text("Publication Name:${newexamplelist['pub_name']}",style:TextStyle(fontSize:20.0)),
        SizedBox(height:10.0),
        Text("Customer Name:${examplelist['customer_name']}",style:TextStyle(fontSize: 20.0)),
@@ -68,12 +69,12 @@ print("hey guyss");
          SizedBox(height: 10.0),
            Text("Language:${newexamplelist['language']}",style:TextStyle(fontSize: 20.0)),
          SizedBox(height: 10.0),
-          Text("Language:${newexamplelist['quantity']}",style:TextStyle(fontSize: 20.0)),
+          Text("Quantity:${newexamplelist['quantity']}",style:TextStyle(fontSize: 20.0)),
          SizedBox(height: 10.0),
-        Row( children:<Widget>[RaisedButton(child: Text('Accept',style: TextStyle(fontSize:10.0),), onPressed: () {
+        Row( mainAxisAlignment: MainAxisAlignment.center,children:<Widget>[IconButton(icon: Icon(Icons.check,color:Colors.green), onPressed: () {
           ignorerequest();
         },),
-        RaisedButton(child:Text('Deny',style: TextStyle(fontSize:10.0),), onPressed: () async{
+        IconButton(icon:Icon(Icons.close,color:Colors.red), onPressed: () async{
           var result=await http_get("changestatus/${widget.id}");
           if(result.data['code']==200)
           await Navigator.push(context,MaterialPageRoute(builder: (context)=>Messagetorequest(id:examplelist['customer_id'],req_id:widget.id)));
@@ -86,16 +87,13 @@ print("hey guyss");
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title:Text("Details",style:TextStyle(fontSize:20.0),),backgroundColor: Colors.blueGrey[90],
-      ),
-      // body:SafeArea(
-              body: SafeArea(child:
-              SingleChildScrollView(
-          child:Column(mainAxisAlignment: MainAxisAlignment.center,children:<Widget>[
+    return Dialog( shape: RoundedRectangleBorder(
+                          borderRadius:
+                              new BorderRadius.all(new Radius.circular(15.0)),
+                        ),child:Container(constraints: BoxConstraints(maxHeight:400),child:Column(mainAxisAlignment: MainAxisAlignment.center,children:<Widget>[
             requestdetails(),
           ])
-        ),
+        
               )
     );
   }

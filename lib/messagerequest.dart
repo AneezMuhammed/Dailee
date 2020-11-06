@@ -30,7 +30,7 @@ class _MessagetorequestState extends State<Messagetorequest> {
                     // padding:EdgeInsets.all(8.0),
                     // child:
                     Padding(padding: const EdgeInsets.all(20.0),
-                                  child: Text("Message Customers and do business",style:TextStyle(fontSize:35) ,
+                                  child: Text("Message Customers and do business",style:TextStyle(fontSize:25) ,
                   ),
                     ),
                   // ),

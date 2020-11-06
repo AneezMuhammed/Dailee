@@ -43,7 +43,7 @@ deletecomplaint()async{
 getbuilder(){
 return Container(padding:EdgeInsets.all(20.0),
     
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
       
        Text("Customer Name:${examplelist['customer_name']}",style:TextStyle(fontSize: 20.0)),
@@ -51,8 +51,8 @@ return Container(padding:EdgeInsets.all(20.0),
         Text("Complaint:${newexamplelist['complaint_text']}",style:TextStyle(fontSize:20.0)),
        SizedBox(height:10.0),
         Text("Email:${examplelist['email']}",style:TextStyle(fontSize: 20.0)),
-      //  SizedBox(height:10.0),
-       new SizedBox(width:50.0,height:50.0,child:RaisedButton(child: Text('Mark as Viewed',style: TextStyle(fontSize:10.0),), onPressed: () {deletecomplaint();},))
+       SizedBox(height:30.0),
+       new Center(child:Container(child: RaisedButton(color: Colors.green[700],child: Text('ok',style: TextStyle(fontSize:20.0,color: Colors.white),), onPressed: () {deletecomplaint();},)))
         //  Text("Category:${newexamplelist['category']}",style:TextStyle(fontSize: 20.0)),
         //  SizedBox(height: 10.0),
         //    Text("Language:${newexamplelist['language']}",style:TextStyle(fontSize: 20.0)),
@@ -71,17 +71,14 @@ return Container(padding:EdgeInsets.all(20.0),
    List samplelist=[];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title:Text("Details",style:TextStyle(fontSize:20.0),),backgroundColor: Colors.blueGrey[90],
-      ),
-      // body:SafeArea(
-              body: SafeArea(child:
-              SingleChildScrollView(
+    return Dialog(shape:RoundedRectangleBorder(borderRadius:   new BorderRadius.all(new Radius.circular(15.0)),),child:
+              Container(
+                constraints: BoxConstraints(maxHeight:400),
           child:Column(mainAxisAlignment: MainAxisAlignment.center,children:<Widget>[
             getbuilder(),
           ])
         ),
-              )
+              
     );
   }
 }

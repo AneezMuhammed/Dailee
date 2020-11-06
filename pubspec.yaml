@@ -26,6 +26,7 @@ dependencies:
   http:
   geolocator: ^6.1.0
   shared_preferences:
+  line_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
